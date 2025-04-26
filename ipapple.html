@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nexus Market Nepal</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f5f5;
+    }
+
+    .section {
+      display: none;
+      padding: 40px;
+      text-align: center;
+      animation: fadeIn 1s forwards;
+    }
+
+    .active {
+      display: block;
+    }
+
+    header {
+      background: linear-gradient(135deg, #00bcd4, #009688);
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+      animation: slideDown 1s ease-out;
+    }
+
+    button {
+      background: #ff5722;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 18px;
+      margin-top: 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    button:hover {
+      background: #e64a19;
+      transform: translateY(-3px);
+    }
+
+    form input, form textarea {
+      width: 80%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    form input:focus, form textarea:focus {
+      border-color: #00bcd4;
+      outline: none;
+      box-shadow: 0px 0px 8px #00bcd4;
+    }
+
+    .result {
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .correct {
+      color: green;
+    }
+
+    .wrong {
+      color: red;
+    }
+
+    .payment-info {
+      margin-top: 20px;
+    }
+
+    #screenshot {
+      margin-top: 10px;
+    }
+
+    #qr-code {
+      width: 250px;
+      margin: 20px 0;
+      border: 5px solid white;
+      border-radius: 20px;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      animation: pulse 2s infinite;
+    }
+
+    /* Animations */
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.9; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<header id="welcome">
+  <h1>Welcome To Nexus Market for Nepal</h1>
+  <button onclick="goToForm()">Buy Now</button>
+</header>
+
+<section id="form-section" class="section">
+  <h2>Fill Your Details</h2>
+  <form id="order-form" onsubmit="checkReference(event)">
+    <input type="text" id="name" placeholder="Full Name" required><br>
+    <input type="tel" id="contact" placeholder="Contact No" required><br>
+    <input type="text" id="address" placeholder="Full Address" required><br>
+    <input type="number" id="age" placeholder="Age" required><br>
+    <input type="text" id="reference" placeholder="Reference Code" required><br>
+    <div id="ref-result" class="result"></div>
+    <button type="submit">Submit</button>
+  </form>
+</section>
+
+<section id="payment-section" class="section">
+  <h2>Payment Needed</h2>
+  <p>Pay the Down Payment to Confirm your Order!</p>
+  <div class="payment-info">
+    <p><strong>Your order will be delivered tomorrow after payment confirmation.</strong></p>
+    <p>Please scan the QR code below:</p>
+    <img src="https://raw.githubusercontent.com/Birusir/Marina-/refs/heads/main/1000022615.jpg" alt="Bank QR Code" id="qr-code"><br>
+    <p>After payment, upload your paid screenshot below:</p>
+    <input type="file" id="screenshot" accept="image/*" required><br>
+    <button onclick="submitPayment()">Submit Payment</button>
+  </div>
+</section>
+
+<section id="pending-section" class="section">
+  <h2>Your Order is Pending</h2>
+  <p>We have received your payment screenshot. Once it's confirmed, we will notify you. Thank you for shopping with Nexus Market!</p>
+</section>
+
+<script>
+  function goToForm() {
+    document.getElementById('welcome').style.display = 'none';
+    document.getElementById('form-section').classList.add('active');
+  }
+
+  function checkReference(event) {
+    event.preventDefault();
+    const referenceInput = document.getElementById('reference').value.trim();
+    const resultDiv = document.getElementById('ref-result');
+    if(referenceInput === '166RT') {
+      resultDiv.innerHTML = '✅ Correct Code';
+      resultDiv.className = 'result correct';
+      setTimeout(() => {
+        document.getElementById('form-section').classList.remove('active');
+        document.getElementById('payment-section').classList.add('active');
+      }, 1000);
+    } else {
+      resultDiv.innerHTML = '❌ Wrong Code';
+      resultDiv.className = 'result wrong';
+    }
+  }
+
+  function submitPayment() {
+    const screenshot = document.getElementById('screenshot').files.length;
+    if (screenshot > 0) {
+      document.getElementById('payment-section').classList.remove('active');
+      document.getElementById('pending-section').classList.add('active');
+    } else {
+      alert('Please upload your paid screenshot before submitting.');
+    }
+  }
+</script>
+
+</body>
+</html>
